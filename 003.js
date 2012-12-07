@@ -10,7 +10,7 @@ function solution() {
   // We will use the unique factorization theorem as the basis for the algorithm
   while (input > index) {
     // Check if the index is a factor of the input
-    if (input % index == 0)
+    if (input % index === 0)
       // Reduce input by a factor of index
       input /= index;
     index++;
