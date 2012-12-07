@@ -19,7 +19,7 @@ function solution() {
     // The next iteration n2 will be the current n1 + n2
     n2 += n1;
     // The next iteration n1 will be the current n2 (but before n1 was added!)
-    // Note: temporary variable could also be used
+    // Note: temporary variable could be used instead
     n1 = n2 - n1;
   }
 
