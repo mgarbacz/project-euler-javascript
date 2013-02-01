@@ -3,40 +3,49 @@
 
 // Find the largest palindrome made from the product of two 3-digit numbers.
 
-function solution() {
-  // Let's start with the largest 3 digit numbers
-  var num1 = 999;
-  var num2 = 999;
+function isPalindrome(num) {
+  // This will only work for positives
+  if (num < 0) return false;
 
-  // Well start checking palindromes on the product of num1 and num2
-  var product = num1 * num2;
+  // Divider will split left half of num, digit by digit, for comparison
+  var divider = 1;
+  while ((num / divider) >= 10)
+    divider *= 10;
 
-  // This will be a math solution
-  var palindrome = false;
-  while (!palindrome) {
-    // Picking out the power of the first digit in the product
-    var powerStart
-      = Math.pow(10, Math.floor(Math.log(product + 1) / Math.LN10));
-    // Last digit is always 10
-    var powerEnd = 10;
+  // Checking for palindrome by breaking num down each time outer digits agree
+  while (num != 0) {
+    var left = Math.floor(num / divider);
+    var right = num % 10;
+    // If the outer digits don't agree, we say no palindrome
+    if (left != right) return false;
 
-    // Assume we have a palindrome, change to false as soon as we see it is not
-    palindrome = true;
-    while (powerStart > powerEnd && palindrome) {
-      if (Math.floor(product / powerStart) != product % powerEnd)
-        palindrome = false;
-      // Move powers to check the next digits
-      powerStart /= 10;
-      powerEnd *= 10;
-    }
-    if (palindrome) console.log(product);
-    // The problems lies here I think!
-    num1 = num2;
-    num2--;
-    product = num1 * num2;
+    // Now we need to set up for the next iteration, so we chop left most digit
+    // by taking the remainder from divider and chop right most digit by
+    // dividing by 10
+    num = Math.floor((num % divider) / 10);
+    // Set up divider for next iteration as 2 powers less than before since we
+    // lost 2 powers of num
+    divider /= 100;
   }
 
-  return product;
+  // If we have reached this point, we have a palindrome!
+  return true;
+}
+
+function solution() {
+  var largestPalindrome = 0;
+
+  // Nested looping over all multiples of num1 and num2
+  // I'm not happy with the efficiency of the logic
+  for (var num1 = 999; num1 > 0; num1--)
+    for (var num2 = 999; num2 > 0; num2--) {
+      var product = num1 * num2;
+      // Check to see if we have the largest palindrome this iteration
+      if (isPalindrome(product) && product > largestPalindrome)
+        largestPalindrome = product;
+    }
+
+  return largestPalindrome;
 }
 
 console.log(solution());
